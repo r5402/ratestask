@@ -1,0 +1,22 @@
+services:
+  api:
+    build: .
+    container_name: api
+    depends_on:
+      - database
+    environment:
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - 80:5000
+    volumes:
+      - .:/code
+  database:
+    container_name: database
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - ./rates.sql:/docker-entrypoint-initdb.d/rates.sql
